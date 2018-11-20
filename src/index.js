@@ -1,16 +1,26 @@
 import _ from "lodash";
+import {cube} from './math.js';
 import printMe from "./print";
-import './styles.css';
 
 function component() {
     let element = document.createElement('div');
-    let btn = document.createElement('button');
 
     //lodash
     element.innerHTML = _.join(['Hello', 'webpack'], ' ');
 
+    //HMR module
+    let btn = document.createElement('button');
     btn.innerHTML = 'Click me and check the console!';
     btn.onclick = printMe;
+    element.appendChild(btn);
+
+    //tree shaking
+    let pre = document.createElement('pre');
+
+    element.innerHTML = [
+        'Hello webpack!',
+        '5 cubed is equal to ' + cube(5)
+    ].join('\n\n');
 
     element.appendChild(btn);
 
