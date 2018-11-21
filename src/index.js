@@ -1,27 +1,25 @@
 import _ from "lodash";
-import {cube} from './math.js';
-import printMe from "./print";
 
 function component() {
     let element = document.createElement('div');
+    let btn = document.createElement('button');
+    let br = document.createElement('br');
 
     //lodash
     element.innerHTML = _.join(['Hello', 'webpack'], ' ');
 
-    //HMR module
-    let btn = document.createElement('button');
+    //async printMe
     btn.innerHTML = 'Click me and check the console!';
-    btn.onclick = printMe;
-    element.appendChild(btn);
 
-    //tree shaking
-    let pre = document.createElement('pre');
+    // Note that because a network request is involved, some indication
+    // of loading would need to be shown in a production-level site/app.
+    btn.onclick = e => import(/* webpackChunkName: "print" */ './print').then(module => {
+        let print = module.default;
 
-    element.innerHTML = [
-        'Hello webpack!',
-        '5 cubed is equal to ' + cube(5)
-    ].join('\n\n');
+        print();
+    });
 
+    element.appendChild(br);
     element.appendChild(btn);
 
     return element;
